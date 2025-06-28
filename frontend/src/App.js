@@ -29,7 +29,6 @@ function App() {
   const [showCopyToast, setShowCopyToast] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const canvasRef = useRef(null);
 
   // Theme toggle effect
   useEffect(() => {
@@ -100,24 +99,6 @@ function App() {
     }
   };
 
-  // Generate color palette based on current color
-  const generatePalette = (baseColor) => {
-    const hex = baseColor.replace('#', '');
-    const r = parseInt(hex.substr(0, 2), 16);
-    const g = parseInt(hex.substr(2, 2), 16);
-    const b = parseInt(hex.substr(4, 2), 16);
-    
-    const palette = [];
-    for (let i = 0; i < 5; i++) {
-      const factor = 0.2 + (i * 0.2);
-      const newR = Math.round(r * factor + (255 * (1 - factor)));
-      const newG = Math.round(g * factor + (255 * (1 - factor)));
-      const newB = Math.round(b * factor + (255 * (1 - factor)));
-      palette.push(`#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`);
-    }
-    return palette;
-  };
-
   return (
     <div className="app-container">
       {/* Interactive cursor effect */}
@@ -184,16 +165,8 @@ function App() {
         transition={{ duration: 0.8 }}
       >
         <div className="hero-section">
-          <motion.h1 
-            className="hero-title"
-            style={{
-              background: `linear-gradient(135deg, var(--text-primary) 0%, ${colorInput} 50%, var(--secondary) 100%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
-            }}
-          >
-            AI Màu Sắc Thông Minh
+          <motion.h1 className="hero-title">
+            <span className="title-gradient">AI Màu Sắc Thông Minh</span>
           </motion.h1>
           <p className="hero-subtitle">
             Khám phá ý nghĩa sâu sắc và tính cách ẩn giấu trong từng màu sắc với công nghệ AI tiên tiến
