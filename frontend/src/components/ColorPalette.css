@@ -1,0 +1,73 @@
+.color-palette {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.palette-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.palette-grid {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.palette-color {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  border: 2px solid var(--glass-border);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.palette-color:hover {
+  border-color: var(--primary);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.palette-color.current {
+  border-color: var(--primary);
+  border-width: 3px;
+  box-shadow: 0 0 0 2px var(--primary)30, 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.current-indicator {
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
+}
+
+@media (max-width: 768px) {
+  .palette-grid {
+    gap: 0.4rem;
+    max-width: 240px;
+  }
+  
+  .palette-color {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+  
+  .current-indicator {
+    font-size: 1rem;
+  }
+}
