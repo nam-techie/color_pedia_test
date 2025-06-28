@@ -1,0 +1,10 @@
+datasets
+pandas
+pyarrow
+flask
+flask-cors
+pandas
+pyarrow
+deep-translator
+transformers
+torch
