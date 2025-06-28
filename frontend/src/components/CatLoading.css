@@ -6,6 +6,7 @@
   height: 450px;
   position: relative;
   padding: 2rem;
+  overflow: hidden;
 }
 
 .loading-cat {
@@ -40,6 +41,7 @@
     #f6ad55 67%, #4a5568 67%,
     #4a5568 100%);
   box-shadow: 0 0 15px rgba(246, 173, 85, 0.3);
+  animation: 2.74s linear infinite body;
 }
 
 .loading-cat .head:before, 
@@ -98,6 +100,10 @@
   width: 100%;
   height: 100%;
   position: absolute;
+}
+
+.loading-cat .foot {
+  animation: 2.74s linear infinite foot;
 }
 
 .loading-cat .foot:before {
@@ -199,6 +205,47 @@
   border: 1px solid var(--glass-border);
   max-width: 350px;
   line-height: 1.5;
+  animation: pulse-text 2s ease-in-out infinite;
+}
+
+.floating-hearts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+}
+
+.floating-hearts .heart {
+  position: absolute;
+  font-size: 1.5rem;
+  opacity: 0;
+  animation: float-heart 4s ease-in-out infinite;
+}
+
+.heart-1 {
+  top: 20%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.heart-2 {
+  top: 30%;
+  right: 20%;
+  animation-delay: 1s;
+}
+
+.heart-3 {
+  bottom: 30%;
+  left: 25%;
+  animation-delay: 2s;
+}
+
+.heart-4 {
+  bottom: 20%;
+  right: 15%;
+  animation-delay: 3s;
 }
 
 /* Animations */
@@ -262,12 +309,24 @@
   100% { transform: rotate(-10deg); }
 }
 
-.loading-cat .body {
-  animation: 2.74s linear infinite body;
+@keyframes pulse-text {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
 }
 
-.loading-cat .foot {
-  animation: 2.74s linear infinite foot;
+@keyframes float-heart {
+  0%, 100% { 
+    opacity: 0; 
+    transform: translateY(0px) scale(0.8); 
+  }
+  25%, 75% { 
+    opacity: 0.8; 
+    transform: translateY(-20px) scale(1.1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: translateY(-30px) scale(1.2); 
+  }
 }
 
 /* Responsive */
@@ -293,5 +352,32 @@
     font-size: 0.9rem;
     padding: 0.5rem 1rem;
     margin-top: 1rem;
+  }
+  
+  .floating-hearts .heart {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cat-loading-container {
+    height: 300px;
+    padding: 1rem;
+  }
+  
+  .loading-cat {
+    width: 140px;
+    height: 100px;
+  }
+  
+  .loading-cat .head, 
+  .loading-cat .foot, 
+  .loading-cat .body {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .floating-hearts .heart {
+    font-size: 1rem;
   }
 }

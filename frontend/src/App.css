@@ -97,18 +97,6 @@ body {
   pointer-events: none;
 }
 
-/* Interactive cursor effect */
-.cursor-glow {
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transition: all 0.1s ease;
-  mix-blend-mode: screen;
-}
-
 /* Copy toast */
 .copy-toast {
   position: fixed;
@@ -126,6 +114,18 @@ body {
   gap: 0.5rem;
   z-index: 1000;
   box-shadow: var(--shadow-xl);
+  animation: toast-in 0.3s ease-out;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Theme Toggle */
@@ -152,6 +152,7 @@ body {
 .theme-toggle:hover {
   background: var(--glass-bg);
   box-shadow: var(--shadow-xl);
+  transform: scale(1.05);
 }
 
 /* Header */
@@ -218,6 +219,11 @@ body {
   transition: all var(--transition);
 }
 
+.picker-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-2xl), 0 0 40px rgba(255, 255, 255, 0.1);
+}
+
 .color-picker-container {
   display: flex;
   flex-direction: column;
@@ -230,6 +236,10 @@ body {
   overflow: hidden;
   box-shadow: var(--shadow-xl);
   transition: all var(--transition);
+}
+
+.picker-wrapper:hover {
+  transform: scale(1.02);
 }
 
 .react-colorful {
@@ -273,6 +283,11 @@ body {
   cursor: pointer;
 }
 
+.color-preview:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-2xl);
+}
+
 .color-controls {
   display: flex;
   flex-direction: column;
@@ -296,6 +311,11 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+}
+
+.hex-display:hover {
+  background: var(--glass-bg);
+  transform: scale(1.02);
 }
 
 .action-buttons {
@@ -322,6 +342,7 @@ body {
   background: var(--primary);
   color: white;
   border-color: var(--primary);
+  transform: scale(1.1);
 }
 
 /* Analyze Button */
@@ -343,6 +364,11 @@ body {
   gap: var(--space-2);
 }
 
+.analyze-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
 .analyze-button:active {
   transform: translateY(0);
 }
@@ -351,6 +377,15 @@ body {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Results Section */
@@ -363,6 +398,11 @@ body {
   box-shadow: var(--shadow-2xl);
   min-height: 500px;
   transition: all var(--transition);
+}
+
+.result-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-2xl), 0 0 40px rgba(255, 255, 255, 0.1);
 }
 
 .result-header {
@@ -411,6 +451,12 @@ body {
 .empty-icon {
   font-size: 4rem;
   opacity: 0.8;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
 }
 
 .empty-text {
@@ -426,6 +472,12 @@ body {
   margin-top: var(--space-4);
   font-size: 1.5rem;
   opacity: 0.6;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 /* Responsive Design */
@@ -534,7 +586,7 @@ body {
   outline-offset: 2px;
 }
 
-/* Smooth animations */
+/* Smooth animations for reduced motion users */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

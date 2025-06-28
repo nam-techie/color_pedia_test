@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 import { HexColorPicker } from "react-colorful";
 import { 
   FiSun, 
@@ -27,22 +26,11 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [colorHistory, setColorHistory] = useState([]);
   const [showCopyToast, setShowCopyToast] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   // Theme toggle effect
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
-
-  // Mouse tracking for interactive effects
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   // Generate random color
   const generateRandomColor = () => {
@@ -69,7 +57,6 @@ function App() {
   // API call to analyze color
   const handleSubmit = async () => {
     setIsLoading(true);
-    setIsAnalyzing(true);
     
     // Add to history
     if (!colorHistory.includes(colorInput)) {
@@ -87,109 +74,51 @@ function App() {
       setTimeout(() => {
         setResult(data.result);
         setIsLoading(false);
-        setIsAnalyzing(false);
       }, 1500);
     } catch (err) {
       console.error(err);
       setTimeout(() => {
         setResult("🚫 Lỗi kết nối tới backend. Vui lòng kiểm tra server đang chạy.");
         setIsLoading(false);
-        setIsAnalyzing(false);
       }, 1500);
     }
   };
 
   return (
     <div className="app-container">
-      {/* Interactive cursor effect */}
-      <div 
-        className="cursor-glow"
-        style={{
-          left: mousePosition.x - 10,
-          top: mousePosition.y - 10,
-          background: `radial-gradient(circle, ${colorInput}40 0%, transparent 70%)`
-        }}
-      />
-
       {/* Copy toast notification */}
-      <AnimatePresence>
-        {showCopyToast && (
-          <motion.div
-            className="copy-toast"
-            initial={{ opacity: 0, y: -50, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -50, scale: 0.8 }}
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-          >
-            <FiCopy size={16} />
-            Đã sao chép màu!
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {showCopyToast && (
+        <div className="copy-toast">
+          <FiCopy size={16} />
+          Đã sao chép màu!
+        </div>
+      )}
 
       {/* Theme Toggle */}
-      <motion.button
+      <button
         className="theme-toggle"
         onClick={() => setIsDarkMode(!isDarkMode)}
-        whileHover={{ scale: 1.1, rotate: 180 }}
-        whileTap={{ scale: 0.95 }}
       >
-        <AnimatePresence mode="wait">
-          {isDarkMode ? (
-            <motion.div
-              key="sun"
-              initial={{ rotate: -180, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 180, opacity: 0 }}
-            >
-              <FiSun size={20} />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="moon"
-              initial={{ rotate: 180, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -180, opacity: 0 }}
-            >
-              <FiMoon size={20} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.button>
+        {isDarkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
+      </button>
 
       {/* Header */}
-      <motion.header 
-        className="app-header"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
+      <header className="app-header">
         <div className="hero-section">
-          <motion.h1 className="hero-title">
+          <h1 className="hero-title">
             <span className="title-gradient">AI Màu Sắc Thông Minh</span>
-          </motion.h1>
+          </h1>
           <p className="hero-subtitle">
             Khám phá ý nghĩa sâu sắc và tính cách ẩn giấu trong từng màu sắc với công nghệ AI tiên tiến
           </p>
         </div>
-      </motion.header>
+      </header>
 
       {/* Main Content */}
       <main className="main-content">
         {/* Color Picker Section */}
-        <motion.section 
-          className="color-picker-section"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <motion.div 
-            className="picker-card"
-            style={{
-              boxShadow: `0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px ${colorInput}20`
-            }}
-            whileHover={{ y: -8 }}
-          >
+        <section className="color-picker-section">
+          <div className="picker-card">
             <div className="color-picker-container">
               <div className="picker-wrapper">
                 <HexColorPicker 
@@ -199,91 +128,59 @@ function App() {
               </div>
 
               <div className="color-info">
-                <motion.div
+                <div
                   className="color-preview"
                   style={{ backgroundColor: colorInput }}
-                  whileHover={{ scale: 1.05, rotate: 5 }}
-                  animate={{
-                    boxShadow: [
-                      `0 8px 32px ${colorInput}30`,
-                      `0 12px 48px ${colorInput}50`,
-                      `0 8px 32px ${colorInput}30`
-                    ]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
                 />
                 
                 <div className="color-controls">
-                  <motion.div 
+                  <div 
                     className="hex-display"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                     onClick={copyToClipboard}
                     style={{ cursor: 'pointer' }}
                   >
                     {colorInput.toUpperCase()}
                     <FiCopy size={14} style={{ marginLeft: '8px', opacity: 0.7 }} />
-                  </motion.div>
+                  </div>
 
                   <div className="action-buttons">
-                    <motion.button
+                    <button
                       className="icon-button"
                       onClick={generateRandomColor}
-                      whileHover={{ scale: 1.1, rotate: 180 }}
-                      whileTap={{ scale: 0.9 }}
                       title="Màu ngẫu nhiên"
                     >
                       <FiRefreshCw size={16} />
-                    </motion.button>
+                    </button>
                     
-                    <motion.button
+                    <button
                       className="icon-button"
                       onClick={copyToClipboard}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
                       title="Sao chép"
                     >
                       <FiCopy size={16} />
-                    </motion.button>
+                    </button>
                   </div>
                 </div>
 
-                <motion.button
+                <button
                   className="analyze-button"
                   onClick={handleSubmit}
                   disabled={isLoading}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{
-                    background: isAnalyzing 
-                      ? `linear-gradient(135deg, ${colorInput} 0%, var(--secondary) 100%)`
-                      : `linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)`
-                  }}
                 >
-                  <AnimatePresence mode="wait">
-                    {isLoading ? (
-                      <motion.div
-                        key="loading"
-                        initial={{ opacity: 0, rotate: 0 }}
-                        animate={{ opacity: 1, rotate: 360 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ rotate: { duration: 1, repeat: Infinity, ease: "linear" } }}
-                      >
+                  {isLoading ? (
+                    <>
+                      <div className="loading-spinner">
                         <FiDroplet />
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="idle"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
-                      >
-                        <FiZap />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                  <span>{isLoading ? 'Đang phân tích...' : 'Phân tích màu sắc'}</span>
-                </motion.button>
+                      </div>
+                      <span>Đang phân tích...</span>
+                    </>
+                  ) : (
+                    <>
+                      <FiZap />
+                      <span>Phân tích màu sắc</span>
+                    </>
+                  )}
+                </button>
               </div>
             </div>
 
@@ -301,102 +198,48 @@ function App() {
                 currentColor={colorInput}
               />
             )}
-          </motion.div>
-        </motion.section>
+          </div>
+        </section>
 
         {/* Results Section */}
-        <motion.section 
-          className="results-section"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          <motion.div 
-            className="result-card"
-            style={{
-              borderColor: `${colorInput}30`
-            }}
-            whileHover={{ y: -4 }}
-          >
-            <AnimatePresence mode="wait">
-              {isLoading ? (
-                <CatLoading 
-                  key="loading"
-                  message="AI đang khám phá bí mật của màu sắc bạn chọn... ✨"
-                />
-              ) : result ? (
-                <motion.div
-                  key="result"
-                  className="result-content"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="result-header">
-                    <h3>Kết quả phân tích</h3>
-                    <div className="result-actions">
-                      <motion.button
-                        className="icon-button"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        title="Chia sẻ"
-                      >
-                        <FiShare2 size={16} />
-                      </motion.button>
-                      <motion.button
-                        className="icon-button"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        title="Tải xuống"
-                      >
-                        <FiDownload size={16} />
-                      </motion.button>
-                    </div>
+        <section className="results-section">
+          <div className="result-card">
+            {isLoading ? (
+              <CatLoading 
+                message="AI đang khám phá bí mật của màu sắc bạn chọn... ✨"
+              />
+            ) : result ? (
+              <div className="result-content">
+                <div className="result-header">
+                  <h3>Kết quả phân tích</h3>
+                  <div className="result-actions">
+                    <button className="icon-button" title="Chia sẻ">
+                      <FiShare2 size={16} />
+                    </button>
+                    <button className="icon-button" title="Tải xuống">
+                      <FiDownload size={16} />
+                    </button>
                   </div>
-                  <div className="result-text">
-                    {result}
+                </div>
+                <div className="result-text">
+                  {result}
+                </div>
+              </div>
+            ) : (
+              <div className="empty-state">
+                <div className="empty-icon">🎨</div>
+                <div className="empty-text">
+                  <p>Chọn một màu yêu thích và khám phá những điều thú vị về tính cách của bạn!</p>
+                  <div className="empty-icons">
+                    <FiEye />
+                    <FiHeart />
+                    <FiStar />
                   </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="empty"
-                  className="empty-state"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
-                  <motion.div
-                    className="empty-icon"
-                    animate={{ 
-                      y: [0, -10, 0],
-                      rotate: [0, 5, -5, 0]
-                    }}
-                    transition={{ 
-                      duration: 4, 
-                      repeat: Infinity, 
-                      ease: "easeInOut" 
-                    }}
-                  >
-                    🎨
-                  </motion.div>
-                  <div className="empty-text">
-                    <p>Chọn một màu yêu thích và khám phá những điều thú vị về tính cách của bạn!</p>
-                    <motion.div 
-                      className="empty-icons"
-                      animate={{ opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      <FiEye />
-                      <FiHeart />
-                      <FiStar />
-                    </motion.div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </motion.section>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
       </main>
     </div>
   );

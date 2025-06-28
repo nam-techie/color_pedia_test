@@ -22,6 +22,14 @@ const CatLoading = ({ message = "AI đang phân tích màu sắc của bạn..."
       <p className="loading-message">
         {message}
       </p>
+      
+      {/* Simple floating hearts */}
+      <div className="floating-hearts">
+        <div className="heart heart-1">💖</div>
+        <div className="heart heart-2">✨</div>
+        <div className="heart heart-3">🌟</div>
+        <div className="heart heart-4">💫</div>
+      </div>
     </div>
   );
 };
