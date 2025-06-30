@@ -2,8 +2,6 @@
 
 Ứng dụng web phân tích tính cách từ màu sắc sử dụng công nghệ AI và machine learning. Khám phá ý nghĩa sâu sắc, tính cách và cảm xúc ẩn giấu trong từng màu sắc yêu thích của bạn.
 
-![Demo App](https://via.placeholder.com/800x400/6366f1/ffffff?text=AI+Color+Personality+Analyzer)
-
 ## ✨ Tính năng nổi bật
 
 - 🎨 **Color Picker thông minh** - Chọn màu trực quan với HexColorPicker
